@@ -1,5 +1,5 @@
 defmodule Hangman do
   def hello do
-    :world
+    IO.puts Dictionary.random_word
   end
 end
