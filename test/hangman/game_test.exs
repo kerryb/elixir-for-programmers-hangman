@@ -10,5 +10,11 @@ defmodule Hangman.GameTest do
       assert game.state ==  :initialising
       assert length(game.letters) > 0
     end
+
+    test "only returns a-z in the letters" do
+      # I hate this non-deterministic test, but that's what Dave said to write!
+      game = Game.new_game
+      assert game.letters |> Enum.all?(fn a -> a =~ ~r/^[a-z]$/ end)
+    end
   end
 end
