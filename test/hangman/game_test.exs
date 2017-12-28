@@ -22,8 +22,7 @@ defmodule Hangman.GameTest do
     test "does nothing if state is :won" do
       game = Game.new_game
              |> Map.put(:state, :won)
-      {new_game, _} = Game.make_move game, "a"
-      assert new_game == game
+      assert {^game, _} = Game.make_move game, "a"
     end
   end
 end
