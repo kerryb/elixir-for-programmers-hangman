@@ -20,15 +20,17 @@ defmodule Hangman.GameTest do
 
   describe "Hangman.Game.make_move/2" do
     test "does nothing if state is :won" do
-      game = Game.new_game
-             |> Map.put(:state, :won)
+      game = new_game_with_state :won
       assert {^game, _} = Game.make_move game, "a"
     end
 
     test "does nothing if state is :lost" do
-      game = Game.new_game
-             |> Map.put(:state, :lost)
+      game = new_game_with_state :lost
       assert {^game, _} = Game.make_move game, "a"
+    end
+
+    def new_game_with_state(state) do
+      Game.new_game |> Map.put(:state, state)
     end
   end
 end
