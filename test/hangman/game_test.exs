@@ -17,4 +17,13 @@ defmodule Hangman.GameTest do
       assert game.letters |> Enum.all?(fn a -> a =~ ~r/^[a-z]$/ end)
     end
   end
+
+  describe "Hangman.Game.make_move/2" do
+    test "does nothing if state is :won" do
+      game = Game.new_game
+             |> Map.put(:state, :won)
+      {new_game, _} = Game.make_move game, "a"
+      assert new_game == game
+    end
+  end
 end

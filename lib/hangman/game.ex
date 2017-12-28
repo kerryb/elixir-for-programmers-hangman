@@ -11,4 +11,6 @@ defmodule Hangman.Game do
       letters: Dictionary.random_word |> String.codepoints,
     }
   end
+
+  def make_move(game, _guess), do: {game, :TODO}
 end
