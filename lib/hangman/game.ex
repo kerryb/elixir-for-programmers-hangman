@@ -1,14 +1,15 @@
 defmodule Hangman.Game do
   alias __MODULE__
+
   defstruct(
     remaining_guesses: 10,
     state: :initialising,
-    letters: [],
+    letters: []
   )
 
   def new_game do
     %Game{
-      letters: Dictionary.random_word |> String.codepoints,
+      letters: Dictionary.random_word() |> String.codepoints()
     }
   end
 

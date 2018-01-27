@@ -6,8 +6,8 @@ defmodule Hangman.Mixfile do
       app: :hangman,
       version: "0.1.0",
       elixir: "~> 1.5",
-      start_permanent: Mix.env == :prod,
-      deps: deps(),
+      start_permanent: Mix.env() == :prod,
+      deps: deps()
     ]
   end
 
@@ -19,7 +19,7 @@ defmodule Hangman.Mixfile do
 
   defp deps do
     [
-      {:dictionary, path: "../dictionary"},
+      {:dictionary, path: "../dictionary"}
     ]
   end
 end
