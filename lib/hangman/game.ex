@@ -5,7 +5,7 @@ defmodule Hangman.Game do
     remaining_guesses: 10,
     state: :initialising,
     letters: [],
-    guessed: MapSet.new()
+    guessed: []
   )
 
   def new_game do
@@ -19,7 +19,7 @@ defmodule Hangman.Game do
   end
 
   def make_move(game, guess) do
-    game = accept_move(game, guess, MapSet.member?(game.guessed, guess))
+    game = accept_move(game, guess, guess in game.guessed)
     {game, :TODO}
   end
 
@@ -28,6 +28,6 @@ defmodule Hangman.Game do
   end
 
   defp accept_move(game, guess, _already_guessed = false) do
-    %{game | guessed: MapSet.put(game.guessed, guess)}
+    %{game | guessed: [guess | game.guessed]}
   end
 end
