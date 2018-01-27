@@ -29,7 +29,14 @@ defmodule Hangman.GameTest do
       assert {^game, _} = Game.make_move(game, "a")
     end
 
-    def new_game_with_state(state) do
+    test "returns a state of :already_guessed if a letter is guessed again" do
+      game = Game.new_game
+      {game, _} = Game.make_move(game, "a")
+      {game, _} = Game.make_move(game, "a")
+      assert game.state == :already_guessed
+    end
+
+    defp new_game_with_state(state) do
       Game.new_game() |> Map.put(:state, state)
     end
   end
