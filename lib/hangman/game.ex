@@ -24,10 +24,10 @@ defmodule Hangman.Game do
   end
 
   defp accept_move(game, _guess, _already_guessed = true) do
-    Map.put(game, :state, :already_guessed)
+    %{game | state: :already_guessed}
   end
 
   defp accept_move(game, guess, _already_guessed = false) do
-    Map.put(game, :guessed, MapSet.put(game.guessed, guess))
+    %{game | guessed: MapSet.put(game.guessed, guess)}
   end
 end
