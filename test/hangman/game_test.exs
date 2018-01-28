@@ -21,25 +21,70 @@ defmodule Hangman.GameTest do
   describe "Hangman.Game.make_move/2" do
     test "does nothing if state is :won" do
       game = new_game_with_state(:won)
-      assert {^game, _} = Game.make_move(game, "a")
+      assert {^game, _} = game |> Game.make_move("a")
     end
 
     test "does nothing if state is :lost" do
       game = new_game_with_state(:lost)
-      assert {^game, _} = Game.make_move(game, "a")
+      assert {^game, _} = game |> Game.make_move("a")
     end
 
     test "does not return a state of :already_guessed the first time a letter is guessed" do
-      game = Game.new_game
-      {game, _} = Game.make_move(game, "a")
+      {game, _} =
+        Game.new_game()
+        |> Game.make_move("a")
+
       assert game.state != :already_guessed
     end
 
     test "returns a state of :already_guessed if a letter is guessed again" do
-      game = Game.new_game
-      {game, _} = Game.make_move(game, "a")
-      {game, _} = Game.make_move(game, "a")
+      {game, _} =
+        Game.new_game()
+        |> Game.make_move("a")
+
+      {game, _} =
+        game
+        |> Game.make_move("a")
+
       assert game.state == :already_guessed
+    end
+
+    test "returns a state of :good_guess if a letter is correctly guessed" do
+      {game, _} =
+        Game.new_game("foo")
+        |> Game.make_move("f")
+
+      assert game.state == :good_guess
+    end
+
+    test "does not use up a guess if a letter is correctly guessed" do
+      {game, _} =
+        Game.new_game("foo")
+        |> Game.make_move("f")
+
+      assert game.remaining_guesses == 10
+    end
+
+    test "returns a state of :won when all letters have been correctly guessed" do
+      {game, _} =
+        Game.new_game("foo")
+        |> Game.make_move("f")
+
+      {game, _} =
+        game
+        |> Game.make_move("o")
+
+      assert game.state == :won
+    end
+
+    test "returns a state of :bad_guess if a letter is incorrectly guessed" do
+      {game, _} = Game.new_game("foo") |> Game.make_move("x")
+      assert game.state == :bad_guess
+    end
+
+    test "uses up a guess if a letter is correctly guessed" do
+      {game, _} = Game.new_game("foo") |> Game.make_move("x")
+      assert game.remaining_guesses == 9
     end
 
     defp new_game_with_state(state) do

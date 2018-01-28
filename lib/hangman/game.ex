@@ -8,9 +8,9 @@ defmodule Hangman.Game do
     guessed: MapSet.new()
   )
 
-  def new_game do
+  def new_game(word \\ Dictionary.random_word()) do
     %Game{
-      letters: Dictionary.random_word() |> String.codepoints()
+      letters: word |> String.codepoints()
     }
   end
 
@@ -27,7 +27,24 @@ defmodule Hangman.Game do
     %{game | state: :already_guessed}
   end
 
-  defp accept_move(game, guess, _already_guessed = false) do
+  defp accept_move(game, guess, _already_guessed) do
     %{game | guessed: MapSet.put(game.guessed, guess)}
+    |> score_guess(Enum.member?(game.letters, guess))
   end
+
+  defp score_guess(game, _correct_guess = true) do
+    new_state =
+      MapSet.new(game.letters)
+      |> MapSet.subset?(game.guessed)
+      |> maybe_won
+
+    %{game | state: new_state}
+  end
+
+  defp score_guess(game, _correct_guess) do
+    %{game | state: :bad_guess, remaining_guesses: game.remaining_guesses - 1}
+  end
+
+  defp maybe_won(_all_letters_guessed = true), do: :won
+  defp maybe_won(_), do: :good_guess
 end
