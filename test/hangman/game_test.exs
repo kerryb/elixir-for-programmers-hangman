@@ -87,6 +87,15 @@ defmodule Hangman.GameTest do
       assert game.remaining_guesses == 9
     end
 
+    test "returns a state of :lost if all guesses are used up" do
+      {game, _} =
+        Game.new_game("foo")
+        |> Map.put(:remaining_guesses, 1)
+        |> Game.make_move("x")
+
+      assert game.state == :lost
+    end
+
     defp new_game_with_state(state) do
       Game.new_game() |> Map.put(:state, state)
     end

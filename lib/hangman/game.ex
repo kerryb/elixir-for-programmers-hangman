@@ -41,8 +41,12 @@ defmodule Hangman.Game do
     %{game | state: new_state}
   end
 
-  defp score_guess(game, _correct_guess) do
-    %{game | state: :bad_guess, remaining_guesses: game.remaining_guesses - 1}
+  defp score_guess(game = %{remaining_guesses: 1}, _incorrect_guess) do
+    %{game | state: :lost}
+  end
+
+  defp score_guess(game = %{remaining_guesses: remaining_guesses}, _incorrect_guess) do
+    %{game | state: :bad_guess, remaining_guesses: remaining_guesses - 1}
   end
 
   defp maybe_won(_all_letters_guessed = true), do: :won
