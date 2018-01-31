@@ -8,10 +8,16 @@ defmodule Hangman.Game do
     guessed: MapSet.new()
   )
 
+  @valid_letters ?a..?z |> Enum.into([]) |> List.to_string |> String.codepoints
+
   def new_game(word \\ Dictionary.random_word()) do
     %Game{
       letters: word |> String.codepoints()
     }
+  end
+
+  def make_move(game, guess) when not is_binary(guess) or not guess in @valid_letters do
+    %{game | state: :invalid_guess}
   end
 
   def make_move(game = %Game{state: state}, _guess) when state in [:won, :lost] do

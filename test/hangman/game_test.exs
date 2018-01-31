@@ -29,6 +29,14 @@ defmodule Hangman.GameTest do
       assert ^game = game |> Game.make_move("a")
     end
 
+    test "rejects guesses that aren't single lower-case letters" do
+      game = Game.new_game
+      for guess <- ["A", "", "-", "$", "ab", "1", 2, :f, nil] do
+        game = game |> Game.make_move(guess)
+        assert game.state == :invalid_guess, "Expected :invalid_guess for #{inspect guess}"
+      end
+    end
+
     test "returns a state of :already_guessed if a letter is guessed again" do
       game =
         Game.new_game()
