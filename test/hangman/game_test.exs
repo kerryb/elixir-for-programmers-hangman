@@ -100,4 +100,21 @@ defmodule Hangman.GameTest do
       Game.new_game() |> Map.put(:state, state)
     end
   end
+
+  describe "Hangman.Game.tally/1" do
+    test "returns a struct with all externally-required state" do
+      game = %Game{
+        state: :good_guess,
+        remaining_guesses: 4,
+        letters: ~w(f o o b a r),
+        guessed: MapSet.new(~w(e o r))
+      }
+
+      assert Hangman.Game.tally(game) == %{
+               state: :good_guess,
+               remaining_guesses: 4,
+               letters: ~w(- o o - - r)
+             }
+    end
+  end
 end
