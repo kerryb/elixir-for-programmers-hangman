@@ -30,10 +30,11 @@ defmodule Hangman.GameTest do
     end
 
     test "rejects guesses that aren't single lower-case letters" do
-      game = Game.new_game
+      game = Game.new_game()
+
       for guess <- ["A", "", "-", "$", "ab", "1", 2, :f, nil] do
         game = game |> Game.make_move(guess)
-        assert game.state == :invalid_guess, "Expected :invalid_guess for #{inspect guess}"
+        assert game.state == :invalid_guess, "Expected :invalid_guess for #{inspect(guess)}"
       end
     end
 
@@ -107,7 +108,8 @@ defmodule Hangman.GameTest do
       assert Hangman.Game.tally(game) == %{
                state: :good_guess,
                remaining_guesses: 4,
-               letters: ~w(- o o - - r)
+               letters: ~w(- o o - - r),
+               guessed_letters: MapSet.new(~w(e o r))
              }
     end
   end
